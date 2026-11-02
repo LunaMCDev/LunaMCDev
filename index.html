@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moon Suite · Premium Minecraft plugins by LunaMCDev</title>
+<meta name="description" content="Fourteen Minecraft server plugins, one sky. Every Moon plugin ships free (Crescent) and premium (Full Moon). Spigot, Paper, Purpur and Folia, 1.8.8 to latest.">
+<meta property="og:title" content="Moon Suite · Minecraft plugins by LunaMCDev">
+<meta property="og:description" content="14 plugins. Free Crescent editions, premium Full Moon editions. Built on MoonLib.">
+<meta name="theme-color" content="#12142B">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%237F7FD5'/%3E%3Cstop offset='1' stop-color='%2391EAE4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='%2312142B'/%3E%3Cmask id='m'%3E%3Crect width='64' height='64' fill='white'/%3E%3Ccircle cx='41' cy='25' r='18'/%3E%3C/mask%3E%3Ccircle cx='32' cy='32' r='22' fill='url(%23g)' mask='url(%23m)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --midnight:#12142B; --space:#1C1F3D; --space-2:#242850; --line:#2E3260;
+  --silver:#E6E8F2; --grey:#8A8FA8; --shadow:#4A4E69;
+  --violet:#7F7FD5; --aqua:#91EAE4;
+  --good:#6FE3A5; --warn:#F5C26B; --bad:#F06A6A;
+  --moonlight:linear-gradient(120deg,var(--violet),var(--aqua));
+  --radius:18px;
+  --head:'Poppins',system-ui,sans-serif;
+  --body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{background:var(--midnight);color:var(--silver);font-family:var(--body);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img,svg{display:block}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--aqua);outline-offset:3px;border-radius:6px}
+.wrap{width:min(1180px,92vw);margin:0 auto}
+.grad{background:var(--moonlight);-webkit-background-clip:text;background-clip:text;color:transparent}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--aqua)}
+h1,h2,h3{font-family:var(--head);line-height:1.15;letter-spacing:-.01em}
+h2{font-size:clamp(2rem,4vw,3rem);margin:.4rem 0 1rem}
+.lead{color:var(--grey);font-size:1.12rem;max-width:640px}
+section{position:relative;padding:110px 0}
+#stars{position:fixed;inset:0;z-index:-1;width:100%;height:100%}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(18,20,43,.82);backdrop-filter:blur(14px);border-color:var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--head);font-weight:600;font-size:1.1rem}
+.brand svg{width:30px;height:30px}
+.navlinks{display:flex;gap:28px;align-items:center}
+.navlinks a{text-decoration:none;color:var(--grey);font-size:.93rem;transition:color .2s}
+.navlinks a:hover{color:var(--silver)}
+.navlinks a.btn-primary,.navlinks a.btn-primary:hover{color:var(--midnight)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;font-weight:600;font-size:.95rem;text-decoration:none;transition:transform .2s,box-shadow .2s,background .2s}
+.btn-primary{background:var(--moonlight);color:var(--midnight);box-shadow:0 8px 30px -8px rgba(127,127,213,.6)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 36px -8px rgba(145,234,228,.6)}
+.btn-ghost{border:1px solid var(--line);color:var(--silver);background:rgba(28,31,61,.5)}
+.btn-ghost:hover{border-color:var(--violet);background:rgba(127,127,213,.12)}
+.btn-sm{padding:8px 16px;font-size:.88rem}
+.menu-toggle{display:none}
+
+/* hero */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:100px}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.8rem,6.4vw,5.2rem);font-weight:700;margin:18px 0 22px}
+.hero p{font-size:1.2rem;color:var(--grey);max-width:560px}
+.hero .ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:56px;max-width:620px}
+.stat{border-left:2px solid var(--line);padding-left:14px}
+.stat b{display:block;font-family:var(--head);font-size:1.6rem}
+.stat span{font-size:.82rem;color:var(--grey)}
+.moon-stage{position:relative;aspect-ratio:1;width:min(440px,100%);justify-self:center}
+.moon-glow{position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,rgba(145,234,228,.28),rgba(127,127,213,.08) 55%,transparent 70%);filter:blur(30px);animation:breathe 6s ease-in-out infinite}
+.hero-moon{position:absolute;inset:14%;width:72%;height:72%;animation:float 9s ease-in-out infinite}
+.orbit{position:absolute;inset:0;border:1px dashed rgba(138,143,168,.25);border-radius:50%;animation:spin 60s linear infinite}
+.orbit i{position:absolute;width:12px;height:12px;border-radius:50%;background:var(--aqua);top:-6px;left:calc(50% - 6px);box-shadow:0 0 18px var(--aqua)}
+.orbit.o2{inset:-7%;animation-duration:90s;animation-direction:reverse;border-color:rgba(138,143,168,.14)}
+.orbit.o2 i{background:var(--violet);box-shadow:0 0 18px var(--violet);width:8px;height:8px;top:-4px}
+@keyframes float{50%{transform:translateY(-14px) rotate(-3deg)}}
+@keyframes breathe{50%{opacity:.6;transform:scale(1.05)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.72rem;color:var(--grey);letter-spacing:.2em;text-transform:uppercase;text-decoration:none}
+.scroll-hint::after{content:'';display:block;width:1px;height:38px;margin:10px auto 0;background:linear-gradient(var(--grey),transparent);animation:drip 2s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* marquee */
+.marquee{border-block:1px solid var(--line);background:rgba(28,31,61,.45);overflow:hidden;padding:18px 0}
+.marquee-track{display:flex;gap:46px;width:max-content;animation:slide 40s linear infinite}
+.marquee span{font-family:var(--head);font-weight:600;font-size:1.05rem;color:var(--grey);white-space:nowrap;display:flex;align-items:center;gap:46px}
+.marquee span::after{content:'☾';color:var(--shadow)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* plugins */
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:38px}
+.controls{display:flex;flex-direction:column;gap:14px;margin-bottom:34px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:8px 16px;border-radius:999px;border:1px solid var(--line);font-size:.88rem;color:var(--grey);background:rgba(28,31,61,.5);transition:all .2s}
+.chip:hover{color:var(--silver);border-color:var(--shadow)}
+.chip[aria-pressed="true"]{background:var(--silver);color:var(--midnight);border-color:var(--silver);font-weight:600}
+.search{position:relative;max-width:360px}
+.search input{width:100%;padding:12px 16px 12px 42px;border-radius:12px;border:1px solid var(--line);background:rgba(28,31,61,.6);color:var(--silver);font:inherit;font-size:.95rem}
+.search input::placeholder{color:var(--grey)}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--grey)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px}
+.card{--a:#7F7FD5;--b:#91EAE4;position:relative;text-align:left;border-radius:var(--radius);padding:24px;background:linear-gradient(160deg,rgba(36,40,80,.75),rgba(28,31,61,.55));border:1px solid var(--line);overflow:hidden;transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .35s;display:flex;flex-direction:column;gap:14px;min-height:268px}
+.card::before{content:'';position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--a) 22%,transparent),transparent 45%);opacity:0;transition:opacity .3s}
+.card:hover,.card:focus-visible{transform:translateY(-6px);border-color:color-mix(in srgb,var(--a) 60%,var(--line));box-shadow:0 24px 50px -24px color-mix(in srgb,var(--a) 70%,transparent)}
+.card:hover::before{opacity:1}
+.card>*{position:relative}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start}
+.icon{width:54px;height:54px;border-radius:15px;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;box-shadow:0 10px 26px -10px var(--a);position:relative;overflow:hidden}
+.icon::after{content:'';position:absolute;width:150%;height:150%;right:-75%;top:-75%;border-radius:50%;background:rgba(18,20,43,.22)}
+.icon svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:1}
+.badge{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--grey);white-space:nowrap}
+.badge.dev{color:var(--good);border-color:rgba(111,227,165,.4);background:rgba(111,227,165,.08)}
+.badge.flag{color:var(--warn);border-color:rgba(245,194,107,.4);background:rgba(245,194,107,.08)}
+.card h3{font-size:1.35rem}
+.card h3 em{font-style:normal;background:linear-gradient(120deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.card .tag{font-size:.9rem;color:var(--silver);opacity:.9;font-weight:500}
+.card p{font-size:.9rem;color:var(--grey)}
+.card .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--grey);padding-top:12px;border-top:1px solid var(--line)}
+.card .foot b{color:var(--silver);font-weight:500;display:inline-flex;align-items:center;gap:6px;transition:gap .2s}
+.card:hover .foot b{gap:10px}
+.empty{grid-column:1/-1;text-align:center;padding:60px;color:var(--grey);border:1px dashed var(--line);border-radius:var(--radius)}
+
+/* editions */
+.editions{display:grid;grid-template-columns:1fr auto 1fr;gap:30px;align-items:center;margin-top:50px}
+.ed{border-radius:24px;padding:34px;border:1px solid var(--line);background:rgba(28,31,61,.55);transition:all .4s}
+.ed h3{font-size:1.7rem;margin-bottom:4px}
+.ed .sub{color:var(--grey);font-size:.95rem;margin-bottom:22px}
+.ed ul{list-style:none;display:grid;gap:12px}
+.ed li{display:flex;gap:12px;font-size:.95rem}
+.ed li::before{content:'';flex:0 0 18px;height:18px;margin-top:3px;border-radius:50%;background:var(--shadow);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12l5 5L20 7' fill='none' stroke='black' stroke-width='3'/%3E%3C/svg%3E") center/70% no-repeat,linear-gradient(#000,#000);-webkit-mask-composite:xor;mask-composite:exclude}
+.ed.crescent li::before{background:var(--aqua)}
+.ed.full li::before{background:var(--violet)}
+.ed.active{border-color:var(--violet);box-shadow:0 30px 70px -40px var(--violet);background:linear-gradient(160deg,rgba(127,127,213,.16),rgba(28,31,61,.6))}
+.ed.crescent.active{border-color:var(--aqua);box-shadow:0 30px 70px -40px var(--aqua);background:linear-gradient(160deg,rgba(145,234,228,.12),rgba(28,31,61,.6))}
+.phase-ctl{display:flex;flex-direction:column;align-items:center;gap:18px}
+.phase-moon{width:170px;height:170px}
+.switch{display:flex;background:rgba(28,31,61,.8);border:1px solid var(--line);border-radius:999px;padding:4px}
+.switch button{padding:8px 16px;border-radius:999px;font-size:.85rem;color:var(--grey);font-weight:600;transition:all .25s}
+.switch button[aria-pressed="true"]{background:var(--silver);color:var(--midnight)}
+.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.pr{padding:22px;border-radius:16px;border:1px solid var(--line);background:rgba(18,20,43,.5)}
+.pr b{font-family:var(--head);display:block;margin-bottom:6px}
+.pr p{color:var(--grey);font-size:.9rem}
+
+/* constellation */
+.const-wrap{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center;margin-top:40px}
+#constellation{width:100%;height:auto;overflow:visible}
+#constellation .edge{stroke:rgba(138,143,168,.18);stroke-width:1.2;transition:stroke .3s,stroke-width .3s,opacity .3s}
+#constellation .edge.on{stroke:var(--aqua);stroke-width:2}
+#constellation.focus .edge:not(.on){opacity:.15}
+#constellation .node{cursor:pointer}
+#constellation .node circle.core{transition:r .25s}
+#constellation .node text{font-family:var(--head);font-size:13px;fill:var(--silver);font-weight:500;pointer-events:none;transition:opacity .3s}
+#constellation.focus .node:not(.on) text{opacity:.3}
+#constellation.focus .node:not(.on) circle{opacity:.35}
+#constellation .node:hover circle.core,#constellation .node.sel circle.core{r:11}
+.const-panel{border:1px solid var(--line);border-radius:20px;padding:28px;background:rgba(28,31,61,.6);min-height:260px}
+.const-panel h3{font-size:1.4rem;margin-bottom:6px}
+.const-panel p{color:var(--grey);font-size:.93rem}
+.const-panel .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.mini{font-size:.8rem;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(18,20,43,.6)}
+.const-panel .hint{font-family:var(--mono);font-size:.75rem;color:var(--shadow);margin-top:18px}
+
+/* moonlib */
+.lib{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.code{font-family:var(--mono);font-size:.84rem;line-height:1.7;background:#0D0F22;border:1px solid var(--line);border-radius:18px;padding:22px 24px;overflow:auto;box-shadow:0 30px 70px -40px #000}
+.code .dots{display:flex;gap:6px;margin-bottom:16px}
+.code .dots i{width:10px;height:10px;border-radius:50%;background:var(--shadow)}
+.code .k{color:#C792EA}.code .t{color:var(--aqua)}.code .s{color:#C3E88D}.code .c{color:var(--shadow)}.code .m{color:#82AAFF}
+.compat{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.compat span{padding:8px 14px;border-radius:10px;border:1px solid var(--line);font-size:.86rem;background:rgba(28,31,61,.55)}
+.libfeat{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+.libfeat div{font-size:.92rem;color:var(--grey)}
+.libfeat b{color:var(--silver);display:block;font-weight:600}
+
+/* roadmap */
+.road{position:relative;margin-top:50px;display:grid;gap:26px}
+.road::before{content:'';position:absolute;left:23px;top:10px;bottom:10px;width:2px;background:linear-gradient(var(--violet),var(--aqua),transparent)}
+.phase{display:grid;grid-template-columns:48px 1fr;gap:24px;align-items:start}
+.phase .dot{width:48px;height:48px;border-radius:50%;background:var(--midnight);border:2px solid var(--line);display:grid;place-items:center;font-family:var(--head);font-weight:700;position:relative;z-index:1}
+.phase.now .dot{border-color:var(--aqua);box-shadow:0 0 0 6px rgba(145,234,228,.12),0 0 26px rgba(145,234,228,.5);color:var(--aqua)}
+.phase .body{border:1px solid var(--line);border-radius:18px;padding:22px 26px;background:rgba(28,31,61,.5)}
+.phase.now .body{border-color:rgba(145,234,228,.35)}
+.phase h3{font-size:1.2rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.phase p{color:var(--grey);font-size:.93rem;margin:6px 0 14px}
+.phase .plugs{display:flex;flex-wrap:wrap;gap:8px}
+.plug{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;border:1px solid var(--line);font-size:.85rem;background:rgba(18,20,43,.6);transition:border-color .2s}
+.plug:hover{border-color:var(--a)}
+.plug i{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--b))}
+
+/* faq */
+.faq{max-width:820px;margin:40px auto 0;display:grid;gap:12px}
+details{border:1px solid var(--line);border-radius:16px;background:rgba(28,31,61,.5);transition:border-color .2s}
+details[open]{border-color:var(--shadow)}
+summary{list-style:none;cursor:pointer;padding:20px 24px;font-weight:600;display:flex;justify-content:space-between;gap:20px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-family:var(--mono);color:var(--aqua);font-size:1.2rem;transition:transform .25s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding:0 24px 22px;color:var(--grey);font-size:.95rem}
+
+/* cta + footer */
+.cta{text-align:center;border:1px solid var(--line);border-radius:30px;padding:70px 30px;background:radial-gradient(600px circle at 50% 0%,rgba(127,127,213,.25),transparent 60%),rgba(28,31,61,.55);overflow:hidden;position:relative}
+.cta h2{margin-top:0}
+.cta .lead{margin:0 auto 30px}
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--grey);font-size:.88rem}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer nav{position:static;border:0}
+footer .fl{display:flex;gap:22px}
+footer a{text-decoration:none}
+footer a:hover{color:var(--silver)}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:5vh 16px;overflow:auto;background:rgba(8,9,22,.72);backdrop-filter:blur(8px)}
+.modal.open{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}}
+.sheet{--a:#7F7FD5;--b:#91EAE4;width:min(880px,100%);background:var(--space);border:1px solid var(--line);border-radius:26px;overflow:hidden;animation:rise .35s cubic-bezier(.2,.8,.2,1);box-shadow:0 40px 120px -30px #000}
+@keyframes rise{from{transform:translateY(24px);opacity:0}}
+.sheet-head{padding:34px 36px 28px;background:radial-gradient(600px circle at 0% 0%,color-mix(in srgb,var(--a) 30%,transparent),transparent 60%),linear-gradient(180deg,rgba(18,20,43,.4),transparent);position:relative;border-bottom:1px solid var(--line)}
+.sheet-head .row{display:flex;gap:20px;align-items:center}
+.sheet-head .icon{width:72px;height:72px;border-radius:20px}
+.sheet-head .icon svg{width:36px;height:36px}
+.sheet-head h2{font-size:2.1rem;margin:0}
+.sheet-head h2 em{font-style:normal;background:linear-gradient(120deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sheet-head .tag{color:var(--silver);opacity:.85}
+.sheet-head .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.close{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;background:rgba(18,20,43,.6);font-size:1.3rem;transition:background .2s}
+.close:hover{background:var(--space-2)}
+.sheet-body{padding:30px 36px 36px;display:grid;gap:30px}
+.sheet-body h4{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);margin-bottom:12px}
+.sheet-body>p{color:var(--silver);font-size:1.02rem}
+.ftable{width:100%;border-collapse:separate;border-spacing:0;font-size:.9rem;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.ftable th,.ftable td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.ftable tr:last-child td{border-bottom:0}
+.ftable thead th{background:rgba(18,20,43,.6);font-family:var(--head);font-weight:600;font-size:.85rem}
+.ftable th.cr{color:var(--aqua)} .ftable th.fm{color:var(--violet)}
+.ftable td:first-child{color:var(--silver);font-weight:600;width:20%}
+.ftable td{color:var(--grey)}
+.ftable td.na{color:var(--shadow);font-style:italic}
+.ftable td:last-child{background:rgba(127,127,213,.06);color:#CFD1EA}
+.cmds{display:flex;flex-wrap:wrap;gap:8px}
+.cmds code{font-family:var(--mono);font-size:.82rem;padding:6px 10px;border-radius:8px;background:#0D0F22;border:1px solid var(--line);color:var(--aqua)}
+.cmds code.ph{color:#C3E88D}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.works{display:flex;flex-wrap:wrap;gap:8px}
+.works button{display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border-radius:999px;border:1px solid var(--line);font-size:.85rem;background:rgba(18,20,43,.6);transition:border-color .2s}
+.works button:hover{border-color:var(--aqua)}
+.works button i{width:20px;height:20px;border-radius:50%}
+.works p{color:var(--grey);font-size:.9rem;width:100%;margin-top:6px}
+.sheet-nav{display:flex;justify-content:space-between;padding-top:20px;border-top:1px solid var(--line)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:960px){
+  .hero .wrap,.lib,.const-wrap{grid-template-columns:1fr}
+  .moon-stage{width:min(320px,80%);order:-1}
+  .editions{grid-template-columns:1fr}
+  .phase-ctl{order:-1}
+  .principles{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .two{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .navlinks{display:none;position:absolute;top:68px;left:0;right:0;flex-direction:column;background:var(--midnight);padding:20px;border-bottom:1px solid var(--line)}
+  .navlinks.open{display:flex}
+  .menu-toggle{display:block;font-size:1.4rem;padding:6px 10px}
+  section{padding:80px 0}
+  .sheet-head,.sheet-body{padding-left:22px;padding-right:22px}
+  .ftable{font-size:.82rem}
+  .ftable td:first-child{width:auto}
+  .libfeat{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+
+<nav id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Moon Suite home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="brandG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7F7FD5"/><stop offset="1" stop-color="#91EAE4"/></linearGradient></defs><circle cx="32" cy="32" r="30" fill="#1C1F3D"/><mask id="brandM"><rect width="64" height="64" fill="#fff"/><circle cx="41" cy="25" r="18" fill="#000"/></mask><circle cx="32" cy="32" r="22" fill="url(#brandG)" mask="url(#brandM)"/></svg>
+      Moon Suite
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <div class="navlinks" id="navlinks">
+      <a href="#plugins">Plugins</a>
+      <a href="#editions">Editions</a>
+      <a href="#suite">How it fits</a>
+      <a href="#moonlib">MoonLib</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-primary btn-sm" data-link="discord" href="#">Join the Discord</a>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="eyebrow">LunaMCDev presents · Coming soon</span>
+        <h1>Fourteen plugins.<br><span class="grad">One sky.</span></h1>
+        <p>The Moon Suite is a family of Minecraft server plugins built to work together. Every plugin is free to start with (<b>Crescent</b>) and has a premium edition (<b>Full Moon</b>) when your server outgrows it.</p>
+        <div class="ctas">
+          <a class="btn btn-primary" href="#plugins">Explore the plugins →</a>
+          <a class="btn btn-ghost" href="#editions">Crescent vs Full Moon</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><b data-count="14">0</b><span>plugins planned</span></div>
+          <div class="stat"><b>1.8.8+</b><span>to the latest release</span></div>
+          <div class="stat"><b>Folia</b><span>ready from day one</span></div>
+          <div class="stat"><b>2</b><span>editions of each plugin</span></div>
+        </div>
+      </div>
+      <div class="moon-stage" aria-hidden="true">
+        <div class="moon-glow"></div>
+        <div class="orbit"><i></i></div>
+        <div class="orbit o2"><i></i></div>
+        <svg class="hero-moon" viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="hm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7F7FD5"/><stop offset="1" stop-color="#91EAE4"/></linearGradient>
+            <radialGradient id="hs" cx=".35" cy=".35" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+            <mask id="cres"><rect width="200" height="200" fill="#fff"/><circle cx="132" cy="80" r="78" fill="#000"/></mask>
+          </defs>
+          <g mask="url(#cres)">
+            <circle cx="100" cy="100" r="90" fill="url(#hm)"/>
+            <circle cx="100" cy="100" r="90" fill="url(#hs)"/>
+            <circle cx="52" cy="122" r="10" fill="#12142B" opacity=".12"/>
+            <circle cx="78" cy="160" r="7" fill="#12142B" opacity=".12"/>
+            <circle cx="36" cy="88" r="5" fill="#12142B" opacity=".12"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <a class="scroll-hint" href="#plugins">Scroll</a>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+  <!-- PLUGINS -->
+  <section id="plugins">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <span class="eyebrow">The line-up</span>
+          <h2>Every plugin your server needs.</h2>
+          <p class="lead">Economy, rewards, social, PvP and staff tools, all in the same style. Click any plugin to see what the free and premium editions include.</p>
+        </div>
+      </div>
+      <div class="controls reveal">
+        <div class="chips" id="filters" role="group" aria-label="Filter by category"></div>
+        <label class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input id="search" type="search" placeholder="Search plugins or features…" aria-label="Search plugins">
+        </label>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <!-- EDITIONS -->
+  <section id="editions">
+    <div class="wrap">
+      <div class="reveal" style="text-align:center">
+        <span class="eyebrow">Two editions, one codebase</span>
+        <h2>Start with a Crescent.<br><span class="grad">Grow into a Full Moon.</span></h2>
+        <p class="lead" style="margin:0 auto">Crescent is a complete plugin you can run forever. Full Moon adds the tools large servers need. Upgrading means swapping one jar: your configs and data stay as they are.</p>
+      </div>
+      <div class="editions reveal">
+        <div class="ed crescent active" id="edCrescent">
+          <h3>Crescent</h3>
+          <div class="sub">Free · for every server</div>
+          <ul>
+            <li>The full core of every plugin, no trial and no time limit</li>
+            <li>Simple YAML config with comments on every option</li>
+            <li>Every menu, command and PlaceholderAPI placeholder you need to run it</li>
+            <li>Same performance and dupe protection as Full Moon</li>
+            <li>Works on Spigot, Paper, Purpur and Folia, 1.8.8 to latest</li>
+          </ul>
+        </div>
+        <div class="phase-ctl">
+          <svg class="phase-moon" viewBox="0 0 200 200" aria-hidden="true">
+            <defs>
+              <linearGradient id="pm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7F7FD5"/><stop offset="1" stop-color="#91EAE4"/></linearGradient>
+              <mask id="phaseMask"><rect width="200" height="200" fill="#fff"/><circle id="shade" cx="140" cy="76" r="80" fill="#000"/></mask>
+            </defs>
+            <circle cx="100" cy="100" r="84" fill="#1C1F3D" stroke="#2E3260"/>
+            <circle cx="100" cy="100" r="84" fill="url(#pm)" mask="url(#phaseMask)"/>
+          </svg>
+          <div class="switch" role="group" aria-label="Choose edition">
+            <button id="btnCrescent" aria-pressed="true">Crescent</button>
+            <button id="btnFull" aria-pressed="false">Full Moon</button>
+          </div>
+        </div>
+        <div class="ed full" id="edFull">
+          <h3>Full Moon</h3>
+          <div class="sub">Premium · for growing servers and networks</div>
+          <ul>
+            <li>In-game editors, so you never have to touch YAML</li>
+            <li>More content: animations, objectives, actions, events</li>
+            <li>MySQL, Redis and sync across a whole network</li>
+            <li>Analytics, logs and Discord webhooks</li>
+            <li>Deeper links with every other Moon plugin</li>
+          </ul>
+        </div>
+      </div>
+      <div class="principles reveal">
+        <div class="pr"><b>Free means complete</b><p>Basic features are never locked. Premium sells scale and convenience, never the basics.</p></div>
+        <div class="pr"><b>Your server never goes down</b><p>If the licence server can't be reached, Full Moon keeps running and logs a warning.</p></div>
+        <div class="pr"><b>Hints you can switch off</b><p>Crescent menus can show what Full Moon adds. One config line turns those hints off.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONSTELLATION -->
+  <section id="suite">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="eyebrow">The constellation</span>
+        <h2>Better together.</h2>
+        <p class="lead">Each Moon plugin detects the others and links up automatically. Crate keys become quest rewards, gang boosters raise prison sell prices, and vanish hides staff everywhere. Hover or tap a star.</p>
+      </div>
+      <div class="const-wrap reveal">
+        <svg id="constellation" viewBox="0 0 640 520" role="img" aria-label="Diagram of how the Moon plugins connect to each other"></svg>
+        <div class="const-panel" id="constPanel" aria-live="polite">
+          <h3 class="grad">14 plugins, 1 suite</h3>
+          <p>Every line is a built-in integration. Install two Moon plugins and they start working together with no setup.</p>
+          <p class="hint">→ hover a star to see its links</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOONLIB -->
+  <section id="moonlib">
+    <div class="wrap lib">
+      <div class="reveal">
+        <span class="eyebrow">Under the hood</span>
+        <h2>Built on <span class="grad">MoonLib</span>.</h2>
+        <p class="lead">Every Moon plugin is built on MoonLib, the same open-source foundation: commands, menus, scoreboards, a Folia-aware scheduler and support for every version. The same quality runs through all 14.</p>
+        <div class="libfeat">
+          <div><b>Dupe-proof menus</b>Shift-clicks, number keys and drags are handled safely in every menu.</div>
+          <div><b>Flicker-free boards</b>Only the lines that change are sent.</div>
+          <div><b>Folia scheduler</b>Region, entity and async tasks through one API.</div>
+          <div><b>Multi-version</b>Modern material and sound names work back to 1.8.</div>
+        </div>
+        <div class="compat">
+          <span>Spigot</span><span>Paper</span><span>Purpur</span><span>Pufferfish</span><span>Folia</span><span>1.8.8 → latest</span><span>Java + Bedrock (Geyser)</span><span>PlaceholderAPI</span><span>Vault</span>
+        </div>
+      </div>
+      <div class="code reveal" aria-label="Example code">
+        <div class="dots"><i></i><i></i><i></i></div>
+<pre><span class="k">public final class</span> <span class="t">MoonCrates</span> <span class="k">extends</span> <span class="t">MoonPlugin</span> {
+
+  <span class="c">@Override</span>
+  <span class="k">protected void</span> <span class="m">enable</span>() {
+    saveDefaultConfig();
+    messages = <span class="k">new</span> <span class="t">Messages</span>(<span class="k">this</span>);
+
+    registerCommands(<span class="k">new</span> <span class="t">CratesCommand</span>(<span class="k">this</span>));
+    registerListeners(<span class="k">new</span> <span class="t">CrateListener</span>(<span class="k">this</span>));
+
+    <span class="t">Editions</span>.load(<span class="k">this</span>); <span class="c">// Crescent or Full Moon?</span>
+  }
+}
+
+<span class="c">// Other Moon plugins just ask:</span>
+<span class="t">CratesAPI</span>.giveKey(player, <span class="s">"lunar"</span>, <span class="m">1</span>);</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="eyebrow">Roadmap</span>
+        <h2>The phases of the Moon.</h2>
+        <p class="lead">Plugins launch in waves, starting with the ones every server can use. Join the Discord to test them early.</p>
+      </div>
+      <div class="road" id="road"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="reveal" style="text-align:center">
+        <span class="eyebrow">Questions</span>
+        <h2>Good to know.</h2>
+      </div>
+      <div class="faq reveal">
+        <details><summary>Is Crescent really free forever?</summary><p>Yes. Crescent isn't a trial or a demo. It's a complete plugin with no time limits and no nag screens. Many small servers will never need anything else.</p></details>
+        <details><summary>How do I upgrade from Crescent to Full Moon?</summary><p>Replace the Crescent jar with the Full Moon jar and restart. Configs and player data are read as they are, so there's nothing to migrate.</p></details>
+        <details><summary>Which server software and versions are supported?</summary><p>Spigot, Paper, Purpur, Pufferfish and Folia, from 1.8.8 up to the latest release, including the year-numbered versions. Java 8 or newer.</p></details>
+        <details><summary>Do Bedrock players work?</summary><p>Yes, through Geyser and Floodgate. Some Full Moon plugins, starting with MoonPrison, also show native Bedrock forms instead of chest menus.</p></details>
+        <details><summary>Do I need every Moon plugin?</summary><p>No. Every plugin works on its own. Installing more of them unlocks the integrations shown in the constellation above.</p></details>
+        <details><summary>What happens if the licence server is down?</summary><p>Nothing visible to players. Full Moon keeps running and logs a warning in the console. A network problem will never take a paying server offline.</p></details>
+        <details><summary>Will there be a bundle?</summary><p>Yes. The Moon Suite bundle will include every Full Moon plugin at a large discount. There will also be smaller Prison and Survival packs.</p></details>
+        <details><summary>Where do I get support?</summary><p>In the Moon Suite Discord. Each plugin has its own channel, and every release has a wiki page and a changelog.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:20px">
+    <div class="wrap">
+      <div class="cta reveal">
+        <span class="eyebrow">Be there at moonrise</span>
+        <h2>Get early access.</h2>
+        <p class="lead">Join the Discord to beta-test plugins before release, vote on features and get the launch-week discount.</p>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+          <a class="btn btn-primary" data-link="discord" href="#">Join the Discord</a>
+          <a class="btn btn-ghost" data-link="github" href="#">MoonLib on GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="year"></span> LunaMCDev · Moon Suite. Not affiliated with Mojang or Microsoft.</div>
+    <div class="fl">
+      <a href="#plugins">Plugins</a>
+      <a href="#roadmap">Roadmap</a>
+      <a data-link="github" href="#">GitHub</a>
+      <a data-link="discord" href="#">Discord</a>
+    </div>
+  </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+/* ===== Edit these links before publishing ===== */
+const LINKS = {
+  discord: '#',                                   // e.g. https://discord.gg/yourcode
+  github:  'https://github.com/LunaMCDev/MoonLib'
+};
+
+const CATS = {
+  eco:'Economy & progression', rew:'Rewards & retention', exp:'Server experience', soc:'Social & PvP', adm:'Admin tools'
+};
+
+/* glyphs: 24x24 stroke icons */
+const G = {
+  pickaxe:'<path d="M4 20l9-9"/><path d="M6 6c4-3 9-3 13 1-2-1-5-1-7 1l-1 1"/><path d="M14 9l1-1c2-2 2-5 1-7 4 4 4 9 1 13"/>',
+  coin:'<circle cx="12" cy="12" r="8"/><path d="M14.5 9.5c-.5-1-1.5-1.5-2.5-1.5-1.5 0-2.5.8-2.5 2s1 1.6 2.5 2 2.5.8 2.5 2-1 2-2.5 2c-1 0-2-.5-2.5-1.5M12 6.5v1.5M12 16v1.5"/>',
+  gavel:'<path d="M14 4l6 6"/><path d="M11 7l6 6"/><path d="M12.5 5.5l-3 3 6 6 3-3"/><path d="M10.5 10.5L4 17l3 3 6.5-6.5"/><path d="M14 21h7"/>',
+  star:'<path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/>',
+  chest:'<rect x="3" y="9" width="18" height="11" rx="2"/><path d="M3 13h18"/><path d="M5 9V7a3 3 0 013-3h8a3 3 0 013 3v2"/><rect x="10.5" y="11.5" width="3" height="4" rx="1"/>',
+  tick:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>',
+  sword:'<path d="M14.5 4H20v5.5L10 19.5 4.5 14z"/><path d="M7 17l-3 3"/><path d="M6 12l6 6"/>',
+  burst:'<path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="2.5"/>',
+  lines:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/>',
+  grid:'<rect x="3" y="3" width="5" height="5" rx="1"/><rect x="9.5" y="3" width="5" height="5" rx="1"/><rect x="16" y="3" width="5" height="5" rx="1"/><rect x="3" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><rect x="16" y="9.5" width="5" height="5" rx="1"/><rect x="3" y="16" width="5" height="5" rx="1"/><rect x="9.5" y="16" width="5" height="5" rx="1"/><rect x="16" y="16" width="5" height="5" rx="1"/>',
+  holo:'<path d="M6 5h12M4 9h16M7 13h10"/><path d="M12 13v5"/><path d="M8 21h8"/>',
+  swords:'<path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6M16 16l4 4M19 21l2-2"/><path d="M14.5 6.5L18 3h3v3l-3.5 3.5"/><path d="M5 14l4 4M7 17l-3 3M3 19l2 2"/>',
+  target:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>',
+  shield:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>'
+};
+
+/* plugin data: [area, Crescent, Full Moon] */
+const P = [
+ {id:'prison',name:'Prison',tag:'Mine. Rank. Ascend.',cat:'eco',a:'#7F7FD5',b:'#C471ED',g:'pickaxe',status:'dev',flag:true,phase:3,
+  sum:'A complete prison core, ready to play. Crescent runs a classic A–Z prison. Full Moon adds private mines, prestige, pickaxe enchants and boosters that keep a season going for months.',
+  f:[['Mines','Unlimited shared mines, weighted block mixes, timed and %-mined resets','Private mines for each player that grow with rank, mine themes, member access'],
+     ['Ranks','A–Z ladder, Vault costs, /rankup and /rankup max','Several ladders, rank perks menu, rank-up animations'],
+     ['Prestige',null,'Prestige levels, Lunar Dust currency, prestige shop'],
+     ['Selling','/sell all, prices per mine, autopickup','Autosell, multipliers, sell wands, backpacks'],
+     ['Pickaxe',null,'Explosive, Jackhammer, Laser, Key Finder, Token Greed and more, with an upgrade menu'],
+     ['Boosters',null,'Personal and global sell, token and XP boosters'],
+     ['Bedrock','Works through Geyser','Native Floodgate forms for rankup and upgrades'],
+     ['Admin','YAML config and a mine wand','In-game mine editor and season reset tool']],
+  cmd:['/prison','/rankup','/prestige','/mine','/sell'],ph:['%moonprison_rank%','%moonprison_progress%','%moonprison_prestige%','%moonprison_tokens%'],
+  links:['crates','quests','gangs','boards','shops'],why:'Key Finder drops crate keys, mining counts for quests, gang boosters raise sell prices.'},
+ {id:'shops',name:'Shops',tag:'Every block has a price.',cat:'eco',a:'#F7C873',b:'#F39C5A',g:'coin',phase:4,
+  sum:'A menu-based server shop and sell system. Full Moon adds an in-game editor and Market Tide, so prices react to supply and demand.',
+  f:[['Shops','Unlimited categories in YAML, quantity picker','Drag-and-drop in-game shop editor'],
+     ['Selling','/sell hand, /sell all, /worth','Sell wands, timed sell-all, sell history'],
+     ['Pricing','Fixed prices','Market Tide: prices fall as players sell and recover over time'],
+     ['Currency','Vault','Tokens, items, XP levels, several currencies per item'],
+     ['Sales',null,'Rank discounts and timed sales'],
+     ['Logs','Console log','Searchable log menu, CSV export, Discord webhook']],
+  cmd:['/shop','/sell','/worth'],ph:['%moonshops_worth_hand%','%moonshops_sale_active%'],
+  links:['prison','crates','kits','events'],why:'Sells crate keys and kits; MoonEvents can start a server-wide sale.'},
+ {id:'auction',name:'Auction',tag:'The market never sleeps.',cat:'eco',a:'#43CEA2',b:'#185A9D',g:'gavel',phase:4,
+  sum:'A safe, dupe-proof auction house. Full Moon adds bidding, search, taxes and the Night Market, one market shared across your whole network.',
+  f:[['Listings','Buy-it-now, listing limits by permission','Bidding with anti-snipe, buyout price'],
+     ['Browsing','Paginated menu, your listings','Categories, search, sort by price or time'],
+     ['Safety','Atomic purchases, Collection Box for expired items','Plus item blacklist and price warnings'],
+     ['Economy','Vault, no fees','Listing fees and sales tax by rank'],
+     ['Network','One server','Night Market: listings shared across servers'],
+     ['Stats',null,'Price history and "average sold for"']],
+  cmd:['/ah','/ah sell <price>','/ah search <text>'],ph:['%moonauction_listings%','%moonauction_sold_total%'],
+  links:['quests','gangs','staff'],why:'Sales count for quests and staff can see auction logs.'},
+ {id:'quests',name:'Quests',tag:'Something to chase, every day.',cat:'eco',a:'#A1FFCE',b:'#4CC9A0',g:'star',flag:true,phase:3,
+  sum:'Daily and weekly quests, plus the Moon Pass: a seasonal battle pass with free and premium tracks that you can sell in your own store.',
+  f:[['Quests','Fixed daily and weekly quests','Random pools, one-off quests, quest chains'],
+     ['Objectives','12 built in: mine, kill, fish, craft and more','30+ including placeholders, regions and other Moon plugins'],
+     ['Moon Pass',null,'Seasonal battle pass, free and premium tracks, 50–100 tiers'],
+     ['Store',null,'Sell the premium track through Tebex with /pass grant'],
+     ['Rerolls',null,'Reroll for money or by permission'],
+     ['Progress','Menu with progress bars','Boss-bar tracker, titles and sounds']],
+  cmd:['/quests','/pass'],ph:['%moonquests_daily_done%','%moonquests_pass_tier%','%moonquests_season_ends%'],
+  links:['prison','auction','vote','bounties','gangs','crates','events'],why:'Listens to almost every Moon plugin for objectives and pays out crate keys.'},
+ {id:'crates',name:'Crates',tag:'Open the night sky.',cat:'rew',a:'#DA22FF',b:'#9733EE',g:'chest',phase:2,
+  sum:'Crates and keys with real showmanship. Crescent gives you three crates and two animations. Full Moon gives you more than ten animations, virtual keys and an editor.',
+  f:[['Crates','Up to 3 crates, rare-win broadcasts','Unlimited crates, mass-open, requirements'],
+     ['Animations','Roulette and Instant','Starfall, Orbit, Cosmo Wheel, Eclipse Reveal, case opening and more'],
+     ['Keys','Physical keys','Virtual keys, /keyall countdown, keys that expire'],
+     ['Rewards','Items and commands','Reward pools, pity system, limited rewards'],
+     ['Display','Particle ring','Holograms and animated titles'],
+     ['Admin','YAML crates','In-game editor and open logs']],
+  cmd:['/crates','/keys','/keyall'],ph:['%mooncrates_keys_<crate>%','%mooncrates_opened_total%'],
+  links:['quests','vote','events','prison','holograms','shops'],why:'Keys are rewards across the suite. Holograms come from MoonHolograms.'},
+ {id:'vote',name:'Vote',tag:'Every vote counts. Literally.',cat:'rew',a:'#56CCF2',b:'#2F80ED',g:'tick',phase:4,
+  sum:'Turns server-list votes into rewards and community goals. Full Moon adds vote parties, streaks and monthly competitions that push you up the lists.',
+  f:[['Rewards','Per vote and per site','Bonus chances, rewards that scale with streak'],
+     ['Offline','Queued until next join','Plus a summary menu'],
+     ['Vote menu','Clickable site links','Status for each site with a cooldown timer'],
+     ['Vote party',null,'Moonrise Party: a server goal with boss-bar progress'],
+     ['Streaks',null,'Daily streaks with milestones and a grace day'],
+     ['Monthly','Total counter','/votetop, monthly reset, automatic top-3 rewards']],
+  cmd:['/vote','/votetop','/voteparty'],ph:['%moonvote_streak%','%moonvote_party_current%'],
+  links:['crates','quests','boards','holograms'],why:'Votes count for quests, reward crate keys and show on boards.'},
+ {id:'kits',name:'Kits',tag:'Gear up in one click.',cat:'rew',a:'#F2994A',b:'#F2C94C',g:'sword',phase:5,
+  sum:'Kits with cooldowns and a clean menu. Full Moon adds an in-game editor and the kit types store owners need.',
+  f:[['Kits','Unlimited kits, cooldowns, permission per kit','One-time, first-join, paid and command kits'],
+     ['Creating','Save your inventory with one command','In-game editor for icon, cost and layout'],
+     ['Menu','Ready or cooldown at a glance','Categories and locked-kit hints'],
+     ['Giving','Overflow drops at your feet','Claim box, auto-equip armour, saved slot layout'],
+     ['Cooldowns','Saved per player','Shared groups and network sync']],
+  cmd:['/kits','/kit <name>','/kit preview <name>'],ph:['%moonkits_cooldown_<kit>%','%moonkits_available%'],
+  links:['shops','crates','events','quests'],why:'Shops and crates can hand out kits; events give everyone a loadout.'},
+ {id:'events',name:'Events',tag:'Something always happening.',cat:'rew',a:'#FF512F',b:'#DD2476',g:'burst',phase:5,
+  sum:'Automated events that keep your server alive when no staff are online. Chat games and drop parties for free, plus KOTH, boss fights and a weekly timetable in Full Moon.',
+  f:[['Chat games','Unscramble, quick maths, first to type, trivia','Reaction, fill-in-the-blank, custom types'],
+     ['Drop parties','Meteor Shower at one location','Several zones, waves, reward pools'],
+     ['PvP',null,'Starfall KOTH, Last Man Standing, Sumo, Spleef'],
+     ['Bosses',null,'Eclipse Event bosses with phases and damage rankings'],
+     ['Schedule','Interval or command','Weekly timetable and rotation pools'],
+     ['Rewards','Commands and items','Event points shop and placement rewards']],
+  cmd:['/events','/event join','/event leave'],ph:['%moonevents_next%','%moonevents_next_in%'],
+  links:['shops','kits','crates','quests','boards','gangs'],why:'Starts sales, hands out kits and keys, and counts for quests.'},
+ {id:'boards',name:'Boards',tag:'Your server, at a glance.',cat:'exp',a:'#7F7FD5',b:'#91EAE4',g:'lines',phase:2,
+  sum:'Sidebar, tab list and nametags with no flicker. Full Moon adds animation, conditional lines and a different board for each world or region.',
+  f:[['Sidebar','One board with PlaceholderAPI and hex colours','Unlimited boards by world, region or permission'],
+     ['Animation',null,'Animated frames, scrolling text and gradient sweeps'],
+     ['Conditions',null,'Show a line only when a placeholder matches'],
+     ['Tab list','Header and footer','Sorted tab, custom name format'],
+     ['Nametags',null,'Prefix and suffix by group, below-name values'],
+     ['Speed','Only changed lines are sent','A refresh rate for each line']],
+  cmd:['/board','/board toggle','/board preview'],ph:['%moonboards_board%','%moonboards_toggled%'],
+  links:['prison','gangs','events','vote','staff'],why:'Ships ready-made boards for prison, gangs and events.'},
+ {id:'menus',name:'Menus',tag:'Any menu, no code.',cat:'exp',a:'#8E9EAB',b:'#EEF2F3',g:'grid',phase:5,
+  sum:'Build server selectors, warp menus, rules and help pages without code. Full Moon adds the Constellation drag-and-drop editor, conditions and 25+ actions.',
+  f:[['Building','YAML with visual layouts','Constellation in-game editor'],
+     ['Actions','Commands, messages, open menu, connect to server','25+ actions with delays, chances and chains'],
+     ['Conditions','Permission to open','Conditions on each item, with a different item shown when not met'],
+     ['Dynamic','Placeholders in names and lore','Auto-refresh, pagination, generated lists'],
+     ['Triggers','Command','Hotbar item, NPC, sign, join'],
+     ['Sharing',null,'Export and import codes, template pack']],
+  cmd:['/mm','/mm open <menu>'],ph:['%moonmenus_open_menu%'],
+  links:['crates','events','kits','holograms'],why:'Actions can call any Moon plugin, so you can restyle the whole suite.'},
+ {id:'holograms',name:'Holograms',tag:'Words that float.',cat:'exp',a:'#00C9FF',b:'#92FE9D',g:'holo',phase:2,
+  sum:'Floating text that uses modern display entities. Full Moon adds text that’s different for each player, animation and Star Board leaderboards for any placeholder.',
+  f:[['Holograms','Unlimited text holograms','Plus an in-game editor'],
+     ['Lines','Text','Items, heads and spinning items'],
+     ['Placeholders','Same text for everyone','Different text for each player, via packets'],
+     ['Leaderboards',null,'Star Board: top 10 of any placeholder, with heads'],
+     ['Interaction',null,'Click actions and multi-page holograms'],
+     ['Rendering','Display entities, armour stands on old versions','Packets only, nothing saved in the world']],
+  cmd:['/holo create','/holo addline','/holo movehere'],ph:['%moonholograms_top_<board>_<rank>_name%'],
+  links:['crates','vote','gangs','prison','bounties','staff','menus'],why:'Powers crate titles and every Moon leaderboard.'},
+ {id:'gangs',name:'Gangs',tag:'Stronger together.',cat:'soc',a:'#EB3349',b:'#F45C43',g:'swords',phase:4,
+  sum:'Gangs for prison, survival and PvP. Crescent covers everything a group needs to play together. Full Moon adds a bank, levels, upgrades and Blood Moon wars.',
+  f:[['Basics','Create, invite, tags, max members','Member limit grows with gang level'],
+     ['Roles','Leader, officer, member','Custom roles with a permission menu'],
+     ['Bank',null,'Deposits, withdraw by role, interest, logs'],
+     ['Levels',null,'Gang XP from mining, kills, quests and events'],
+     ['Upgrades',null,'Slots, vault size, sell and XP boosters'],
+     ['Wars',null,'Blood Moon War: timed kill-count wars with bets']],
+  cmd:['/gang','/gang create <name>','/gc'],ph:['%moongangs_name%','%moongangs_level%','%moongangs_bank%'],
+  links:['prison','quests','events','boards','bounties','holograms','auction'],why:'Gang boosters affect prison sell prices; gang tags show on nametags.'},
+ {id:'bounties',name:'Bounties',tag:'A price on every head.',cat:'soc',a:'#C79081',b:'#DFA579',g:'target',phase:5,
+  sum:'Players put money on each other’s heads. Full Moon adds protection against bounty abuse, a tracking compass and Wanted Posters.',
+  f:[['Bounties','Place and add to bounties','Item bounties, expiry with refund, tax'],
+     ['Claiming','Killer gets the money','Wanted Poster heads'],
+     ['Anonymous',null,'Hidden bounties for a fee'],
+     ['Anti-abuse','No bounties on yourself','Alt/IP block, kill cooldowns, gang rules'],
+     ['Hunting',null,'Moon Tracker compass and Hunter’s Moon top'],
+     ['Auto',null,'Kill streaks add bounties automatically']],
+  cmd:['/bounty set','/bounty list','/bounty top'],ph:['%moonbounties_on_me%','%moonbounties_earned%'],
+  links:['gangs','quests','holograms'],why:'Gang members can’t claim bounties on each other; claims count for quests.'},
+ {id:'staff',name:'Staff',tag:'Keep the peace.',cat:'adm',a:'#4B6CB7',b:'#2B3F7A',g:'shield',phase:5,
+  sum:'A moderation toolkit. Crescent covers what one moderator needs during a shift. Full Moon gives a head of staff reports, punishment templates, alt detection and stats.',
+  f:[['Staff mode','Night Watch: tools hotbar, inventory saved','Custom layout, follow mode, X-ray alerts'],
+     ['Vanish','New Moon vanish','Vanish levels, hidden across every Moon plugin'],
+     ['Reports','/report with staff alerts','Report menu with claim, status and history'],
+     ['Punish','Uses your ban plugin','Tribunal templates with reason ladders'],
+     ['Players','/invsee, /endersee','Profiles with alts, reports and punishments'],
+     ['Activity',null,'Time on duty and weekly Discord summaries']],
+  cmd:['/staff','/vanish','/freeze','/report','/sc'],ph:['%moonstaff_vanished%','%moonstaff_reports_open%'],
+  links:['boards','holograms','auction','shops'],why:'Vanish hides you from every Moon plugin at once.'}
+];
+const byId = Object.fromEntries(P.map(p=>[p.id,p]));
+const PHASES = [
+  {n:1,t:'New Moon · Foundation',d:'Shared code, brand, website, Discord and a test setup for every supported version.',items:[],now:true},
+  {n:2,t:'Waxing Crescent · First light',d:'Plugins every server can use, built quickly on MoonLib, to get the Moon name known.',items:['boards','crates','holograms']},
+  {n:3,t:'First Quarter · Flagships',d:'The two biggest plugins: a full prison core and quests with the Moon Pass.',items:['prison','quests']},
+  {n:4,t:'Waxing Gibbous · Economy & social',d:'The systems that keep players around for months.',items:['shops','gangs','auction','vote']},
+  {n:5,t:'Full Moon · The complete suite',d:'The last five plugins, then the Moon Suite bundle launches.',items:['menus','events','staff','kits','bounties']}
+];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const icon = p => `<span class="icon"><svg viewBox="0 0 24 24">${G[p.g]}</svg></span>`;
+const statusBadge = p => p.status==='dev' ? '<span class="badge dev">In development</span>' : (p.flag ? '<span class="badge flag">Flagship</span>' : `<span class="badge">Phase ${p.phase}</span>`);
+
+/* links */
+document.querySelectorAll('[data-link]').forEach(a=>{
+  const url = LINKS[a.dataset.link];
+  if(url && url !== '#'){ a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
+});
+$('#year').textContent = new Date().getFullYear();
+
+/* marquee */
+$('#marquee').innerHTML = [...P,...P].map(p=>`<span>Moon${p.name}</span>`).join('');
+
+/* filters + grid */
+let cat = 'all', q = '';
+$('#filters').innerHTML = [['all','All plugins'],...Object.entries(CATS)].map(([k,v])=>`<button class="chip" data-cat="${k}" aria-pressed="${k==='all'}">${v}</button>`).join('');
+$('#filters').addEventListener('click',e=>{
+  const b = e.target.closest('.chip'); if(!b) return;
+  cat = b.dataset.cat;
+  document.querySelectorAll('#filters .chip').forEach(c=>c.setAttribute('aria-pressed',c===b));
+  renderGrid();
+});
+$('#search').addEventListener('input',e=>{ q = e.target.value.trim().toLowerCase(); renderGrid(); });
+
+function matches(p){
+  if(cat!=='all' && p.cat!==cat) return false;
+  if(!q) return true;
+  const hay = [p.name,'moon'+p.name,p.tag,p.sum,CATS[p.cat],...p.f.flat().filter(Boolean),...p.cmd].join(' ').toLowerCase();
+  return hay.includes(q);
+}
+function renderGrid(){
+  const list = P.filter(matches);
+  $('#grid').innerHTML = list.length ? list.map(p=>`
+    <button class="card" data-id="${p.id}" style="--a:${p.a};--b:${p.b}" aria-label="MoonPlugin ${p.name}: open details">
+      <div class="top">${icon(p)}${statusBadge(p)}</div>
+      <div><h3>Moon<em>${p.name}</em></h3><div class="tag">${esc(p.tag)}</div></div>
+      <p>${esc(p.sum.split('. ')[0].replace(/\.$/,''))}.</p>
+      <div class="foot"><span>${CATS[p.cat]}</span><b>Details <span aria-hidden="true">→</span></b></div>
+    </button>`).join('') : `<div class="empty">No plugins match “${esc(q)}”. Try another word.</div>`;
+}
+renderGrid();
+$('#grid').addEventListener('click',e=>{ const c=e.target.closest('.card'); if(c) openPlugin(c.dataset.id); });
+$('#grid').addEventListener('pointermove',e=>{
+  const c=e.target.closest('.card'); if(!c) return;
+  const r=c.getBoundingClientRect();
+  c.style.setProperty('--mx',(e.clientX-r.left)+'px'); c.style.setProperty('--my',(e.clientY-r.top)+'px');
+});
+
+/* modal */
+let lastFocus = null;
+/* deep links (#plugin-crates); skipped silently in sandboxed previews where history is blocked */
+function setHash(h){
+  try{ history.replaceState(null,'',h || (location.pathname+location.search)); }catch(e){}
+}
+function openPlugin(id, push=true){
+  const p = byId[id]; if(!p) return;
+  const i = P.indexOf(p), prev = P[(i-1+P.length)%P.length], next = P[(i+1)%P.length];
+  const sheet = $('#sheet');
+  sheet.style.setProperty('--a',p.a); sheet.style.setProperty('--b',p.b);
+  sheet.innerHTML = `
+    <div class="sheet-head">
+      <button class="close" id="closeBtn" aria-label="Close">×</button>
+      <div class="row">${icon(p)}<div><h2 id="mTitle">Moon<em>${p.name}</em></h2><div class="tag">${esc(p.tag)}</div></div></div>
+      <div class="meta"><span class="badge">${CATS[p.cat]}</span>${p.status==='dev'||p.flag?statusBadge(p):''}<span class="badge">Roadmap phase ${p.phase}</span></div>
+    </div>
+    <div class="sheet-body">
+      <p>${esc(p.sum)}</p>
+      <div>
+        <h4>What each edition includes</h4>
+        <table class="ftable">
+          <thead><tr><th>Feature</th><th class="cr">☾ Crescent · free</th><th class="fm">● Full Moon · premium</th></tr></thead>
+          <tbody>${p.f.map(([a,c,f])=>`<tr><td>${esc(a)}</td>${c?`<td>${esc(c)}</td>`:'<td class="na">Full Moon only</td>'}<td>${esc(f)}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>
+      <div class="two">
+        <div><h4>Commands</h4><div class="cmds">${p.cmd.map(c=>`<code>${esc(c)}</code>`).join('')}</div></div>
+        <div><h4>Placeholders</h4><div class="cmds">${p.ph.map(c=>`<code class="ph">${esc(c)}</code>`).join('')}</div></div>
+      </div>
+      <div>
+        <h4>Works with</h4>
+        <div class="works">${p.links.map(l=>{const o=byId[l];return `<button data-go="${l}"><i style="background:linear-gradient(135deg,${o.a},${o.b})"></i>Moon${o.name}</button>`}).join('')}<p>${esc(p.why)}</p></div>
+      </div>
+      <div class="sheet-nav">
+        <button class="btn btn-ghost btn-sm" data-go="${prev.id}">← Moon${prev.name}</button>
+        <button class="btn btn-ghost btn-sm" data-go="${next.id}">Moon${next.name} →</button>
+      </div>
+    </div>`;
+  const m = $('#modal');
+  if(!m.classList.contains('open')){ lastFocus = document.activeElement; m.classList.add('open'); document.body.style.overflow='hidden'; }
+  m.scrollTop = 0;
+  $('#closeBtn').focus();
+  if(push) setHash('#plugin-'+id);
+}
+function closeModal(){
+  $('#modal').classList.remove('open'); document.body.style.overflow='';
+  setHash('');
+  if(lastFocus) lastFocus.focus();
+}
+$('#modal').addEventListener('click',e=>{
+  if(e.target.id==='modal' || e.target.closest('#closeBtn')) return closeModal();
+  const g = e.target.closest('[data-go]'); if(g) openPlugin(g.dataset.go);
+});
+document.addEventListener('keydown',e=>{
+  if(!$('#modal').classList.contains('open')) return;
+  if(e.key==='Escape') closeModal();
+  if(e.key==='Tab'){
+    const f=[...$('#sheet').querySelectorAll('button')]; if(!f.length) return;
+    const first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+});
+try{ if(location.hash.startsWith('#plugin-')) openPlugin(location.hash.slice(8), false); }catch(e){}
+
+/* editions toggle: moon phase */
+const shade = $('#shade');
+let phaseAnim = null;
+function setEdition(full){
+  $('#btnCrescent').setAttribute('aria-pressed',!full); $('#btnFull').setAttribute('aria-pressed',full);
+  $('#edCrescent').classList.toggle('active',!full); $('#edFull').classList.toggle('active',full);
+  const from = +shade.getAttribute('cx'), to = full ? 330 : 140, t0 = performance.now(), dur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 900;
+  cancelAnimationFrame(phaseAnim);
+  const step = now => { const k = Math.min(1,(now-t0)/dur), e = 1-Math.pow(1-k,3); shade.setAttribute('cx', from+(to-from)*e); if(k<1) phaseAnim=requestAnimationFrame(step); };
+  phaseAnim = requestAnimationFrame(step);
+}
+$('#btnCrescent').onclick = () => setEdition(false);
+$('#btnFull').onclick = () => setEdition(true);
+$('#edCrescent').onclick = () => setEdition(false);
+$('#edFull').onclick = () => setEdition(true);
+
+/* constellation */
+(function(){
+  const svg = $('#constellation'), NS='http://www.w3.org/2000/svg', cx=320, cy=260;
+  const order = ['prison','shops','auction','quests','crates','vote','kits','events','boards','menus','holograms','gangs','bounties','staff'];
+  const pos = {};
+  order.forEach((id,i)=>{ const ang = -Math.PI/2 + i*2*Math.PI/order.length, r = i%2 ? 175 : 215; pos[id]=[cx+r*Math.cos(ang), cy+r*Math.sin(ang)]; });
+  const edges = new Map();
+  P.forEach(p=>p.links.forEach(l=>{ const k=[p.id,l].sort().join('|'); edges.set(k,[p.id,l]); }));
+  const gE = document.createElementNS(NS,'g'), gN = document.createElementNS(NS,'g');
+  svg.append(gE,gN);
+  const edgeEls = [];
+  edges.forEach(([a,b])=>{ const l=document.createElementNS(NS,'line'); l.setAttribute('x1',pos[a][0]); l.setAttribute('y1',pos[a][1]); l.setAttribute('x2',pos[b][0]); l.setAttribute('y2',pos[b][1]); l.setAttribute('class','edge'); l.dataset.a=a; l.dataset.b=b; gE.append(l); edgeEls.push(l); });
+  // centre moon
+  const c = document.createElementNS(NS,'g');
+  c.innerHTML = `<circle cx="${cx}" cy="${cy}" r="44" fill="#1C1F3D" stroke="#2E3260"/><mask id="cm"><rect x="${cx-50}" y="${cy-50}" width="100" height="100" fill="#fff"/><circle cx="${cx+12}" cy="${cy-9}" r="25" fill="#000"/></mask><circle cx="${cx}" cy="${cy}" r="30" fill="url(#hm)" mask="url(#cm)"/>`;
+  gN.append(c);
+  const nodeEls = {};
+  order.forEach(id=>{
+    const p = byId[id], [x,y] = pos[id], g = document.createElementNS(NS,'g');
+    g.setAttribute('class','node'); g.setAttribute('tabindex','0'); g.setAttribute('role','button'); g.setAttribute('aria-label','Moon'+p.name);
+    const right = x >= cx;
+    g.innerHTML = `<circle cx="${x}" cy="${y}" r="20" fill="${p.a}" opacity=".14"/><circle class="core" cx="${x}" cy="${y}" r="8" fill="${p.a}" style="filter:drop-shadow(0 0 6px ${p.a})"/><text x="${x + (right?16:-16)}" y="${y+4}" text-anchor="${right?'start':'end'}">Moon${p.name}</text>`;
+    g.addEventListener('mouseenter',()=>focusNode(id));
+    g.addEventListener('focus',()=>focusNode(id));
+    g.addEventListener('click',()=>{ focusNode(id); openPlugin(id); });
+    g.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openPlugin(id); } });
+    gN.append(g); nodeEls[id]=g;
+  });
+  svg.addEventListener('mouseleave',()=>{ svg.classList.remove('focus'); Object.values(nodeEls).forEach(n=>n.classList.remove('on','sel')); edgeEls.forEach(e=>e.classList.remove('on')); });
+  function focusNode(id){
+    const p = byId[id], linked = new Set([id]);
+    svg.classList.add('focus');
+    edgeEls.forEach(e=>{ const on = e.dataset.a===id || e.dataset.b===id; e.classList.toggle('on',on); if(on){ linked.add(e.dataset.a); linked.add(e.dataset.b);} });
+    Object.entries(nodeEls).forEach(([k,n])=>{ n.classList.toggle('on',linked.has(k)); n.classList.toggle('sel',k===id); });
+    const others = [...linked].filter(k=>k!==id);
+    $('#constPanel').innerHTML = `<h3 style="background:linear-gradient(120deg,${p.a},${p.b});-webkit-background-clip:text;background-clip:text;color:transparent">Moon${p.name}</h3><p>${esc(p.why)}</p><div class="links">${others.map(k=>`<span class="mini">Moon${byId[k].name}</span>`).join('')}</div><p class="hint">${others.length} integrations · click the star for details</p>`;
+  }
+})();
+
+/* roadmap */
+$('#road').innerHTML = PHASES.map(ph=>`
+  <div class="phase reveal ${ph.now?'now':''}">
+    <div class="dot">${ph.n}</div>
+    <div class="body">
+      <h3>${ph.t}${ph.now?'<span class="badge dev">In progress</span>':''}</h3>
+      <p>${ph.d}</p>
+      <div class="plugs">${ph.items.length ? ph.items.map(id=>{const p=byId[id];return `<button class="plug" style="--a:${p.a};--b:${p.b}" data-open="${id}"><i></i>Moon${p.name}</button>`}).join('') : '<span class="mini">MoonLib</span><span class="mini">moon-common</span><span class="mini">Brand & website</span><span class="mini">Test servers</span>'}</div>
+    </div>
+  </div>`).join('');
+$('#road').addEventListener('click',e=>{ const b=e.target.closest('[data-open]'); if(b) openPlugin(b.dataset.open); });
+
+/* nav */
+const nav = $('#nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20),{passive:true});
+$('#menuToggle').onclick = () => { const o = $('#navlinks').classList.toggle('open'); $('#menuToggle').setAttribute('aria-expanded',o); };
+document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',()=>$('#navlinks').classList.remove('open')));
+
+/* reveal + counters */
+const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const end = +el.dataset.count, t0 = performance.now();
+  const tick = now => { const k=Math.min(1,(now-t0)/1400); el.textContent = Math.round(end*(1-Math.pow(1-k,3))); if(k<1) requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+});
+
+/* starfield */
+(function(){
+  const cv = $('#stars'), ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w,h,stars=[],shooting=null,mx=0,my=0,dpr=Math.min(devicePixelRatio||1,2);
+  function resize(){
+    w=innerWidth; h=innerHeight; cv.width=w*dpr; cv.height=h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n = Math.round(w*h/5200);
+    stars = Array.from({length:n},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.3+.2,z:Math.random()*.8+.2,t:Math.random()*Math.PI*2,s:Math.random()*.02+.005,c:Math.random()<.15?'#91EAE4':Math.random()<.15?'#B4B4F0':'#E6E8F2'}));
+  }
+  addEventListener('resize',resize); resize();
+  addEventListener('pointermove',e=>{ mx=(e.clientX/w-.5); my=(e.clientY/h-.5); },{passive:true});
+  function frame(){
+    ctx.clearRect(0,0,w,h);
+    const g = ctx.createRadialGradient(w*.75,h*.15,0,w*.75,h*.15,Math.max(w,h)*.8);
+    g.addColorStop(0,'rgba(127,127,213,.10)'); g.addColorStop(1,'rgba(18,20,43,0)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+    const sy = scrollY*.05;
+    for(const s of stars){
+      s.t += s.s;
+      const a = .35 + .65*Math.abs(Math.sin(s.t));
+      const x = (s.x - mx*30*s.z + w) % w, y = ((s.y - my*30*s.z - sy*s.z) % h + h) % h;
+      ctx.globalAlpha=a; ctx.fillStyle=s.c; ctx.beginPath(); ctx.arc(x,y,s.r,0,7); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+    if(!shooting && Math.random()<.004) shooting={x:Math.random()*w*.7,y:Math.random()*h*.4,vx:7+Math.random()*4,vy:3+Math.random()*2,life:1};
+    if(shooting){
+      const s=shooting, grd=ctx.createLinearGradient(s.x,s.y,s.x-s.vx*12,s.y-s.vy*12);
+      grd.addColorStop(0,`rgba(230,232,242,${s.life})`); grd.addColorStop(1,'rgba(230,232,242,0)');
+      ctx.strokeStyle=grd; ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(s.x,s.y); ctx.lineTo(s.x-s.vx*12,s.y-s.vy*12); ctx.stroke();
+      s.x+=s.vx; s.y+=s.vy; s.life-=.015; if(s.life<=0) shooting=null;
+    }
+    if(!reduce) requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+</body>
+</html>
